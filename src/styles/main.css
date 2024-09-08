@@ -20,7 +20,25 @@ h1 {
   /* make sure that the heading is drawn on top */
   z-index: 1;
 }
-
+#create-btn{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  border: 2px solid lightseagreen;
+  border-radius: 8px;
+  background-color: lightseagreen;
+  padding: 0.5rem;
+  color: white;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(19, 97, 93);
+    border-color: rgb(19, 97, 93);
+  }
+}
 #scene-container {
   /* tell our scene container to take up the full page */
   position: absolute;
