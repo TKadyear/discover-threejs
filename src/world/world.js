@@ -36,7 +36,7 @@ export  class World {
     cube.rotation.set(-1, -0.1, 0.8);
     
     this.#loop.updatables.push(cube);
-    const secondCube = createCube("standard","#000000");
+    const secondCube = createCube("standard");
     secondCube.position.set(-2,0,2)
     secondCube.rotation.set(-1, -0.1, 0.8);
     const light = createLights("lightyellow");
