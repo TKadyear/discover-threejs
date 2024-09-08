@@ -28,12 +28,13 @@ export  class World {
   #init(){
     this.container.append(this.#renderer.domElement);
     
-    const cube = createCube("purple");
+    const cube = createCube("basic","purple");
     cube.position.set(2,0,2)
-    cube.rotation.set(-0.5, -0.1, 0.8);
+    cube.rotation.set(-1, -0.1, 0.8);
 
-    const secondCube = createCube("#000000");
-    secondCube.position.set(-2,0,2);
+    const secondCube = createCube("standard","#000000");
+    secondCube.position.set(-2,0,2)
+    secondCube.rotation.set(-1, -0.1, 0.8);
     const light = createLights("lightyellow");
     light.position.set(1,10,5);
 
