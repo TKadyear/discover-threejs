@@ -7,7 +7,7 @@ import { createControls } from './systems/controls.js';
 import { Resizer } from './systems/Resizer.js';
 import { Loop } from './systems/Loop.js';
 
-export  class World {
+export class World {
   // 1. Create an instance of the World app
   #camera;
   #scene;
@@ -15,40 +15,41 @@ export  class World {
   #loop;
   #controls;
 
-  
+
   constructor(container) {
-    this.container =container
+    this.container = container
     const fov = 35; // AKA Field of View
     const aspect = container.clientWidth / container.clientHeight;
     const near = 0.1; // the near clipping plane
-    const far = 100; 
-    this.#camera= createCamera(fov,aspect,near,far);
+    const far = 100;
+    this.#camera = createCamera(fov, aspect, near, far);
     this.#scene = createScene();
     this.#renderer = createRenderer();
-    this.#loop= new Loop(this.#camera, this.#scene, this.#renderer);
+    this.#loop = new Loop(this.#camera, this.#scene, this.#renderer);
     this.container.append(this.#renderer.domElement);
-    this.#controls =createControls(this.#camera,this.#renderer.domElement);
+    this.#controls = createControls(this.#camera, this.#renderer.domElement);
     this.#init();
   }
-  
-  #init(){
-    
-    const cube = createCube("basic","purple");
-    cube.position.set(2,0,2)
+
+  #init() {
+
+    const cube = createCube("basic", "purple");
+    cube.position.set(2, 0, 2)
     cube.rotation.set(-1, -0.1, 0.8);
     const secondCube = createCube("standard");
-    secondCube.position.set(-2,0,2)
+    secondCube.position.set(-2, 0, 2)
     secondCube.rotation.set(-1, -0.1, 0.8);
-    const light = createLights("lightyellow");
-    light.position.set(1,10,5);
-    
-    this.#scene.add(cube, light);
+    const { mainLight, ambientLight,hemisphereLight } = createLights("lightyellow");
+    mainLight.position.set(1, 10, 5);
+    mainLight.visible=false;
+    ambientLight.visible=false;
+    this.#scene.add(cube, mainLight, ambientLight,hemisphereLight);
     this.#loop.updatables.push(this.#controls);
-    
+
     this.#scene.add(secondCube);
 
     const resizer = new Resizer(this.container, this.#camera, this.#renderer);
-    
+
     this.#controls.addEventListener('change', () => {
       this.render();
     });
@@ -57,10 +58,10 @@ export  class World {
   start() {
     this.#loop.start();
   }
-  save(){
+  save() {
     this.#controls.saveState();
   }
-  reset(){
+  reset() {
     this.#controls.reset();
   }
   stop() {
@@ -71,4 +72,4 @@ export  class World {
     this.#renderer.render(this.#scene, this.#camera);
   }
 }
-  
+
