@@ -3,6 +3,7 @@ import { createCube } from './components/cube.js';
 import { createScene } from './components/scene.js';
 import { createLights } from './components/lights.js';
 import { createRenderer } from './systems/renderer.js';
+import { createControls } from './systems/controls.js';
 import { Resizer } from './systems/Resizer.js';
 import { Loop } from './systems/Loop.js';
 
@@ -12,6 +13,7 @@ export  class World {
   #scene;
   #renderer;
   #loop;
+  #controls;
 
   
   constructor(container) {
@@ -24,37 +26,43 @@ export  class World {
     this.#scene = createScene();
     this.#renderer = createRenderer();
     this.#loop= new Loop(this.#camera, this.#scene, this.#renderer);
-    
+    this.container.append(this.#renderer.domElement);
+    this.#controls =createControls(this.#camera,this.#renderer.domElement);
     this.#init();
   }
   
   #init(){
-    this.container.append(this.#renderer.domElement);
     
     const cube = createCube("basic","purple");
     cube.position.set(2,0,2)
     cube.rotation.set(-1, -0.1, 0.8);
-    
-    this.#loop.updatables.push(cube);
     const secondCube = createCube("standard");
     secondCube.position.set(-2,0,2)
     secondCube.rotation.set(-1, -0.1, 0.8);
     const light = createLights("lightyellow");
     light.position.set(1,10,5);
     
-    this.#loop.updatables.push(secondCube);
     this.#scene.add(cube, light);
-
-
+    this.#loop.updatables.push(this.#controls);
+    
     this.#scene.add(secondCube);
-  
+
     const resizer = new Resizer(this.container, this.#camera, this.#renderer);
     
+    this.#controls.addEventListener('change', () => {
+      this.render();
+    });
+
   }
   start() {
     this.#loop.start();
   }
-  
+  save(){
+    this.#controls.saveState();
+  }
+  reset(){
+    this.#controls.reset();
+  }
   stop() {
     this.#loop.stop();
   }
